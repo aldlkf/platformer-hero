@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,16 +14,32 @@ public class Finish : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player" && !levelCompleted)
+        // Проверяем по компоненту, а не по имени объекта "Player"
+        if (levelCompleted || !collision.TryGetComponent(out PlayerMovement _))
+        {
+            return;
+        }
+
+        levelCompleted = true;
+
+        if (finishSound != null)
         {
             finishSound.Play();
-            levelCompleted = true;
-            Invoke("CompleteLevel", 2f);
         }
+
+        Invoke(nameof(CompleteLevel), 2f);
     }
 
     private void CompleteLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
+
+        // Если следующей сцены нет — возвращаемся в главное меню, а не получаем ошибку
+        if (nextScene >= SceneManager.sceneCountInBuildSettings)
+        {
+            nextScene = 0;
+        }
+
+        SceneManager.LoadScene(nextScene);
     }
 }

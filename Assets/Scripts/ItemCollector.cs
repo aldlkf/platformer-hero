@@ -1,15 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemCollector : MonoBehaviour
 {
-    private int cherries = 0;
-
     [SerializeField] private Text cherriesText;
 
     [SerializeField] private AudioSource collectionSoundEffect;
+
+    private void Start()
+    {
+        // Запоминаем счёт на старте уровня, чтобы при смерти откатиться к нему
+        GameSession.BeginLevel();
+        UpdateText();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -17,8 +20,13 @@ public class ItemCollector : MonoBehaviour
         {
             collectionSoundEffect.Play();
             Destroy(collision.gameObject);
-            cherries++;
-            cherriesText.text = "Cherries: " + cherries;
+            GameSession.AddCherry();
+            UpdateText();
         }
+    }
+
+    private void UpdateText()
+    {
+        cherriesText.text = "Cherries: " + GameSession.TotalCherries;
     }
 }
