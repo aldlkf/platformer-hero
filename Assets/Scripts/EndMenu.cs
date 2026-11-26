@@ -7,6 +7,10 @@ public class EndMenu : MonoBehaviour
     // Необязательно: Text на экране финала для показа итогового счёта
     [SerializeField] private Text resultText;
 
+    // Имена сцен вместо «магических» индексов 0 и 1 (сцены должны быть в Build Settings)
+    [SerializeField] private string firstLevelScene = "Level 1";
+    [SerializeField] private string menuScene = "Start Screen";
+
     private void Start()
     {
         if (resultText != null)
@@ -18,13 +22,13 @@ public class EndMenu : MonoBehaviour
     public void PlayAgain()
     {
         GameSession.Reset();
-        SceneManager.LoadScene(1); // Level 1
+        SceneManager.LoadScene(firstLevelScene);
     }
 
     public void MainMenu()
     {
         GameSession.Reset();
-        SceneManager.LoadScene(0); // Start Screen
+        SceneManager.LoadScene(menuScene);
     }
 
     public void Quit()

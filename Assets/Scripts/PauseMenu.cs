@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private string menuScene = "Start Screen";
 
     private bool isPaused;
 
@@ -32,7 +33,7 @@ public class PauseMenu : MonoBehaviour
     public void BackToMenu()
     {
         ResetTimeAndAudio();
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(menuScene);
     }
 
     private void OnDestroy()

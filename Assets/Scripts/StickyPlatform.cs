@@ -1,23 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StickyPlatform : MonoBehaviour
 {
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player")
+        // Проверка по компоненту вместо имени объекта "Player"
+        if (collision.TryGetComponent(out PlayerMovement _))
         {
-            collision.gameObject.transform.SetParent(transform);
+            collision.transform.SetParent(transform);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player")
+        // Отпускаем игрока, только если он «прилип» именно к этой платформе
+        if (collision.TryGetComponent(out PlayerMovement _) && collision.transform.parent == transform)
         {
-            collision.gameObject.transform.SetParent(null);
+            collision.transform.SetParent(null);
         }
     }
 }
